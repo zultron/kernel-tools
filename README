@@ -12,7 +12,8 @@ kconfigtool can compare two kernel config files to see what the
 differences are.  Just run 'kconfigtool.py -d config1 config2'.
 Sometimes this is most useful for config files that have been run
 through the kernel 'oldnoconfig' target, which fills in missing
-options and removes extra options.
+options and removes extra options; see 'Canonicalizing config files'
+below.
 
 kconfigtool can merge two or more config files.  That is its purpose
 in replacing merge.pl.  Running 'kconfigtool.py -m config1 config2'
@@ -72,3 +73,21 @@ instance, overriding 'CONFIG_FOO' in 'config-generic' by creating
 'config-generic-myvariant' may be overridden later by
 'config-x86_64-generic-rhel'.
 
+======================================
+Canonicalizing config files
+======================================
+
+It can be helpful to run config files through the kernel's config file
+tools in order to fill in missing values and remove inapplicable
+values.  This will help, for example, get two config files from
+different sources into a better state for comparing with
+kconfigtool.py --diff.
+
+Here is how to do it from a linux kernel tree.
+
+cd $kernelsrc
+cp $myconfig .config
+# for a vanilla kernel, use 'oldnoconfig'; for RH, use 'nonint_oldconfig'
+make ARCH=$myarch oldnoconfig
+
+The resulting config will be placed back into .config.
