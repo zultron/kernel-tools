@@ -1,0 +1,74 @@
+A few things to help create custom kernel RPMs for el6.
+
+======================================
+kconfigtool.py
+======================================
+
+kconfigtool.py replaces merge.pl in the kernel specfile.  It must be
+accompanied by the modified Makefile.config, which calls kconfigtool
+with the right arguments instead of merge.pl.
+
+kconfigtool can compare two kernel config files to see what the
+differences are.  Just run 'kconfigtool.py -d config1 config2'.
+Sometimes this is most useful for config files that have been run
+through the kernel 'oldnoconfig' target, which fills in missing
+options and removes extra options.
+
+kconfigtool can merge two or more config files.  That is its purpose
+in replacing merge.pl.  Running 'kconfigtool.py -m config1 config2'
+merges the two configs together.  In case of conflicts, the first
+config file has priority, so in this mode, kconfigtool might be
+thought of as applying an 'override' config.
+
+kconfigtool has an option '-v' or '--variant'.  The option's argument
+is a file extension to add to merge arguments.  If a file is found with
+that extension, it will be merged.  For example, if a file
+'config1-debug' exists, running 'kconfigtool.py -m -v -debug config1
+config2' is equivalent to running 'kconfigtool.py -m config1-debug
+config1 config2'.  This is used in the kernel specfile and
+Makefile.config as described below.
+
+======================================
+kernel.spec
+======================================
+
+This kernel.spec is based on kernel-2.6.32-279.14.1.el6.src.rpm.  It
+has been modified to build a xenomai kernel, and some of the annoying
+problems have been worked (or hacked) out.
+
+This isn't trivial, since RH now pre-patches their kernel tarballs
+before putting them into the kernel source RPM.  (This violates the
+RPM philosophy, which they developed, of packaging pristine sources
+[1] [2].)  Among those pre-patches are changes related to the specfile
+scripts, so simply replacing the RH kernel with a vanilla kernel
+results in an RPM that won't build.
+
+The specfile here tries to work around these problems with a light
+touch.  A diff of the original specfile will show all the original
+code, but where appropriate, disabled or changed with %if..%endif
+conditionals.
+
+[1]  http://www.rpm.org/max-rpm/ch-rpm-philosophy.html
+[2]  http://docs.fedoraproject.org/en-US/Fedora_Draft_Documentation/0.1/html/RPM_Guide/ch01s02s08.html
+
+======================================
+Makefile.config
+======================================
+
+The kernel specfile has a macro, %{variant}, in this example, set to
+'-xenomai'.  This changes the RPM name to kernel-xenomai.  A
+modification to the specfile for convenience is to pass the variant
+name to Makefile.config, which then runs 'kconfigtool.py --variant
+%{variant}'.
+
+This makes it easy to make incremental changes to the kernel
+configuration by adding override config files.  For example, to apply
+'CONFIG_XENOMAI=y' to every configuration, put that option in a file
+named 'config-generic-xenomai'.  That will be applied to the
+'config-generic' file, which is the base of every configuration.
+
+Watch out that your changes are not clobbered by later files.  For
+instance, overriding 'CONFIG_FOO' in 'config-generic' by creating
+'config-generic-myvariant' may be overridden later by
+'config-x86_64-generic-rhel'.
+
