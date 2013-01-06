@@ -1,4 +1,23 @@
-A few things to help create custom kernel RPMs for el6.
+A few things to help create custom kernel packages for el6 (and some
+Debian/Ubuntu).
+
+=====================================
+configs
+=====================================
+
+This subdirectory contains kernel configurations.
+
+config-xenomai-*:  Partial configs to enable Xenomai
+
+  These are partial configs that can be applied on top of another
+  complete config to enable Xenomai.  The files document the source of
+  each config variable reasonably well.
+
+config-quantal-3.5.3-*:  Stock kernel 3.5.3 configs from Debian Quantal
+
+  These are complete configs for a vanilla 3.5.3 kernel with the same
+  options as Debian Quantal.
+
 
 ======================================
 kconfigtool.py
@@ -29,6 +48,7 @@ config2' is equivalent to running 'kconfigtool.py -m config1-debug
 config1 config2'.  This is used in the kernel specfile and
 Makefile.config as described below.
 
+
 ======================================
 kernel.spec
 ======================================
@@ -52,6 +72,7 @@ conditionals.
 [1]  http://www.rpm.org/max-rpm/ch-rpm-philosophy.html
 [2]  http://docs.fedoraproject.org/en-US/Fedora_Draft_Documentation/0.1/html/RPM_Guide/ch01s02s08.html
 
+
 ======================================
 Makefile.config
 ======================================
@@ -72,6 +93,7 @@ Watch out that your changes are not clobbered by later files.  For
 instance, overriding 'CONFIG_FOO' in 'config-generic' by creating
 'config-generic-myvariant' may be overridden later by
 'config-x86_64-generic-rhel'.
+
 
 ======================================
 Canonicalizing config files
