@@ -155,6 +155,12 @@ CONFIG_XENO_DRIVERS_RTIPC_XDDP=y
 CONFIG_XENO_DRIVERS_RTIPC_IDDP=y
 CONFIG_XENO_DRIVERS_RTIPC_BUFP=y
 #
+# IPIPE options
+#
+CONFIG_IPIPE=y
+# CONFIG_IPIPE_LEGACY is not set
+# CONFIG_IPIPE_DEBUG is not set
+#
 #
 #######################################
 # x86 kernel configuration
