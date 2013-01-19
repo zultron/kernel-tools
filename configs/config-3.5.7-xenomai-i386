@@ -278,3 +278,7 @@ CONFIG_NR_CPUS=256
 # CONFIG_FTRACE is not set
 # This apparently depends on !FTRACE
 # CONFIG_KMEMCHECK is not set
+#
+# gpio-pch is broken
+# http://www.xenomai.org/pipermail/xenomai/2013-January/027365.html
+# CONFIG_GPIO_PCH is not set
