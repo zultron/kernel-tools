@@ -1,0 +1,280 @@
+# Kernel config for Xenomai 2.6.2, x86_64 (amd64)                    -*-conf-*-
+#
+# This config should be applied on top of a generic kernel config to,
+# hopefully, create a working configuration for a Xenomai-patched
+# kernel.
+#
+# It has been tested on EL6 distros with x86_64 CPU.  It is not yet
+# tested on Debian/Ubuntu.
+#
+# General problem options; see
+# http://www.xenomai.org/documentation/xenomai-2.6/html/TROUBLESHOOTING/index.html#kconf
+#
+# CONFIG_CPU_IDLE is not set
+#
+# This one must be disabled on all arches except x86_64
+CONFIG_CC_STACKPROTECTOR=y
+#
+# CONFIG_KGDB is not set
+#
+#############################################
+# Xenomai options
+#
+# Based on Gilles's config:
+# http://www.xenomai.org/pipermail/xenomai/2013-January/027345.html
+#
+# Real-time sub-system
+#
+CONFIG_XENOMAI=y
+CONFIG_XENO_GENERIC_STACKPOOL=y
+CONFIG_XENO_FASTSYNCH=y
+CONFIG_XENO_OPT_NUCLEUS=y
+CONFIG_XENO_OPT_PERVASIVE=y
+# CONFIG_XENO_OPT_PRIOCPL is not set
+CONFIG_XENO_OPT_PIPELINE_HEAD=y
+# CONFIG_XENO_OPT_SCHED_CLASSES is not set
+CONFIG_XENO_OPT_PIPE=y
+CONFIG_XENO_OPT_VFILE=y
+CONFIG_XENO_OPT_PIPE_NRDEV=32
+CONFIG_XENO_OPT_REGISTRY_NRSLOTS=512
+# getting this during xeno-regression-test switchtest:
+# Xenomai: xnthread_init: no stack for kernel thread 'rtk4/1'
+#     (raise CONFIG_XENO_OPT_SYS_STACKPOOLSZ)
+# From regression test:
+# ioctl(RTTST_RTIOC_SWTEST_CREATE_KTASK): Cannot allocate memory
+# Related:
+# http://www.mail-archive.com/xenomai-help@gna.org/msg03869.html
+# Quadrupling both params to be safe
+# (Gilles uses 4096 for both values)
+#CONFIG_XENO_OPT_SYS_HEAPSZ=256
+CONFIG_XENO_OPT_SYS_HEAPSZ=1024
+#CONFIG_XENO_OPT_SYS_STACKPOOLSZ=128
+CONFIG_XENO_OPT_SYS_STACKPOOLSZ=512
+CONFIG_XENO_OPT_SEM_HEAPSZ=12
+CONFIG_XENO_OPT_GLOBAL_SEM_HEAPSZ=12
+CONFIG_XENO_OPT_STATS=y
+CONFIG_XENO_OPT_DEBUG=y
+# CONFIG_XENO_OPT_DEBUG_NUCLEUS is not set
+# CONFIG_XENO_OPT_DEBUG_XNLOCK is not set
+# CONFIG_XENO_OPT_DEBUG_QUEUES is not set
+# CONFIG_XENO_OPT_DEBUG_REGISTRY is not set
+# CONFIG_XENO_OPT_DEBUG_TIMERS is not set
+CONFIG_XENO_OPT_DEBUG_SYNCH_RELAX=y
+CONFIG_XENO_OPT_WATCHDOG=y
+CONFIG_XENO_OPT_WATCHDOG_TIMEOUT=4
+CONFIG_XENO_OPT_SHIRQ=y
+CONFIG_XENO_OPT_SELECT=y
+CONFIG_XENO_OPT_HOSTRT=y
+
+#
+# Timing
+#
+CONFIG_XENO_OPT_TIMING_PERIODIC=y
+CONFIG_XENO_OPT_TIMING_VIRTICK=1000
+CONFIG_XENO_OPT_TIMING_SCHEDLAT=0
+
+#
+# Scalability
+#
+# CONFIG_XENO_OPT_SCALABLE_SCHED is not set
+CONFIG_XENO_OPT_TIMER_LIST=y
+# CONFIG_XENO_OPT_TIMER_HEAP is not set
+# CONFIG_XENO_OPT_TIMER_WHEEL is not set
+
+#
+# Machine
+#
+CONFIG_XENO_HW_FPU=y
+
+#
+# SMI workaround
+#
+# CONFIG_XENO_HW_SMI_DETECT_DISABLE is not set
+CONFIG_XENO_HW_SMI_DETECT=y
+# CONFIG_XENO_HW_SMI_WORKAROUND is not set
+
+#
+# Interfaces
+#
+CONFIG_XENO_SKIN_NATIVE=y
+CONFIG_XENO_OPT_NATIVE_PERIOD=0
+CONFIG_XENO_OPT_NATIVE_PIPE=y
+CONFIG_XENO_OPT_NATIVE_PIPE_BUFSZ=1024
+CONFIG_XENO_OPT_NATIVE_SEM=y
+CONFIG_XENO_OPT_NATIVE_EVENT=y
+CONFIG_XENO_OPT_NATIVE_MUTEX=y
+CONFIG_XENO_OPT_NATIVE_COND=y
+CONFIG_XENO_OPT_NATIVE_QUEUE=y
+CONFIG_XENO_OPT_NATIVE_BUFFER=y
+CONFIG_XENO_OPT_NATIVE_HEAP=y
+CONFIG_XENO_OPT_NATIVE_ALARM=y
+CONFIG_XENO_OPT_NATIVE_MPS=y
+# CONFIG_XENO_OPT_NATIVE_INTR is not set
+# CONFIG_XENO_OPT_DEBUG_NATIVE is not set
+CONFIG_XENO_SKIN_POSIX=y
+CONFIG_XENO_OPT_POSIX_PERIOD=0
+# CONFIG_XENO_OPT_POSIX_SHM is not set
+# CONFIG_XENO_OPT_POSIX_INTR is not set
+CONFIG_XENO_OPT_POSIX_SELECT=y
+# CONFIG_XENO_OPT_DEBUG_POSIX is not set
+CONFIG_XENO_SKIN_PSOS=m
+CONFIG_XENO_OPT_PSOS_PERIOD=1000
+# CONFIG_XENO_OPT_DEBUG_PSOS is not set
+CONFIG_XENO_SKIN_UITRON=m
+CONFIG_XENO_OPT_UITRON_PERIOD=1000
+# CONFIG_XENO_OPT_DEBUG_UITRON is not set
+CONFIG_XENO_SKIN_VRTX=m
+CONFIG_XENO_OPT_VRTX_PERIOD=1000
+CONFIG_XENO_SKIN_VXWORKS=m
+CONFIG_XENO_OPT_VXWORKS_PERIOD=1000
+# CONFIG_XENO_OPT_DEBUG_VXWORKS is not set
+# CONFIG_XENO_OPT_NOWARN_DEPRECATED is not set
+CONFIG_XENO_SKIN_RTDM=y
+CONFIG_XENO_OPT_RTDM_PERIOD=0
+CONFIG_XENO_OPT_RTDM_FILDES=128
+CONFIG_XENO_OPT_RTDM_SELECT=y
+# CONFIG_XENO_OPT_DEBUG_RTDM is not set
+# CONFIG_XENO_OPT_DEBUG_RTDM_APPL is not set
+
+#
+# Drivers
+#
+CONFIG_XENO_DRIVERS_16550A=m
+# CONFIG_XENO_DRIVERS_16550A_PIO is not set
+# CONFIG_XENO_DRIVERS_16550A_MMIO is not set
+CONFIG_XENO_DRIVERS_16550A_ANY=y
+CONFIG_XENO_DRIVERS_16550A_PCI=y
+CONFIG_XENO_DRIVERS_16550A_PCI_MOXA=y
+CONFIG_XENO_DRIVERS_TIMERBENCH=y
+CONFIG_XENO_DRIVERS_KLATENCY=m
+CONFIG_XENO_DRIVERS_IRQBENCH=m
+CONFIG_XENO_DRIVERS_SWITCHTEST=y
+CONFIG_XENO_DRIVERS_RTDMTEST=m
+CONFIG_XENO_DRIVERS_CAN=m
+CONFIG_XENO_DRIVERS_CAN_DEBUG=y
+# CONFIG_XENO_DRIVERS_CAN_LOOPBACK is not set
+CONFIG_XENO_DRIVERS_CAN_RXBUF_SIZE=1024
+CONFIG_XENO_DRIVERS_CAN_MAX_DEVICES=4
+CONFIG_XENO_DRIVERS_CAN_MAX_RECEIVERS=16
+CONFIG_XENO_DRIVERS_CAN_BUS_ERR=y
+# CONFIG_XENO_DRIVERS_CAN_CALC_BITTIME_OLD is not set
+CONFIG_XENO_DRIVERS_CAN_VIRT=m
+# CONFIG_XENO_DRIVERS_CAN_FLEXCAN is not set
+CONFIG_XENO_DRIVERS_CAN_SJA1000=m
+CONFIG_XENO_DRIVERS_CAN_SJA1000_ISA=m
+CONFIG_XENO_DRIVERS_CAN_SJA1000_MEM=m
+CONFIG_XENO_DRIVERS_CAN_SJA1000_PEAK_PCI=m
+CONFIG_XENO_DRIVERS_CAN_SJA1000_IXXAT_PCI=m
+CONFIG_XENO_DRIVERS_CAN_SJA1000_ADV_PCI=m
+CONFIG_XENO_DRIVERS_CAN_SJA1000_PLX_PCI=m
+CONFIG_XENO_DRIVERS_CAN_SJA1000_EMS_PCI=m
+CONFIG_XENO_DRIVERS_CAN_SJA1000_ESD_PCI=m
+CONFIG_XENO_DRIVERS_CAN_SJA1000_PEAK_DNG=m
+CONFIG_XENO_DRIVERS_ANALOGY=m
+CONFIG_XENO_DRIVERS_ANALOGY_DEBUG=y
+CONFIG_XENO_DRIVERS_ANALOGY_DEBUG_LEVEL=0
+CONFIG_XENO_DRIVERS_ANALOGY_DRIVER_DEBUG_LEVEL=0
+CONFIG_XENO_DRIVERS_ANALOGY_FAKE=m
+CONFIG_XENO_DRIVERS_ANALOGY_8255=m
+CONFIG_XENO_DRIVERS_ANALOGY_PARPORT=m
+CONFIG_XENO_DRIVERS_ANALOGY_NI_MITE=m
+CONFIG_XENO_DRIVERS_ANALOGY_NI_TIO=m
+CONFIG_XENO_DRIVERS_ANALOGY_NI_MIO=m
+CONFIG_XENO_DRIVERS_ANALOGY_NI_PCIMIO=m
+CONFIG_XENO_DRIVERS_ANALOGY_NI_670x=m
+CONFIG_XENO_DRIVERS_ANALOGY_NI_660x=m
+CONFIG_XENO_DRIVERS_ANALOGY_S526=m
+CONFIG_XENO_DRIVERS_RTIPC=y
+CONFIG_XENO_DRIVERS_RTIPC_XDDP=y
+CONFIG_XENO_DRIVERS_RTIPC_IDDP=y
+CONFIG_XENO_OPT_IDDP_NRPORT=32
+CONFIG_XENO_DRIVERS_RTIPC_BUFP=y
+CONFIG_XENO_OPT_BUFP_NRPORT=32
+#
+# IPIPE options
+#
+CONFIG_IPIPE=y
+# memleak recommends this; why?
+CONFIG_IPIPE_LEGACY=y
+# CONFIG_IPIPE_DEBUG is not set
+#
+#
+#######################################
+# x86 kernel configuration
+# http://www.xenomai.org/index.php/Configuring_x86_kernels
+#
+# Do not disable power management globally, the only configuration
+# options which should be disabled in this area are:
+#
+# CONFIG_APM is not set
+# CONFIG_ACPI_PROCESSOR is not set
+#
+# This option creates issues with Xenomai timing code, as well as
+# unpredictable run-time for your tasks, and possibly high latencies
+# when changing frequency:
+#
+# CONFIG_CPU_FREQ is not set
+#
+# The option CONFIG_PCI_MSI should be turned off. For more details,
+# see the thread at:
+# https://mail.gna.org/public/adeos-main/2008-08/threads.html
+#
+# CONFIG_PCI_MSI is not set
+#
+############################################
+# Tips and tricks setting up your x86 kernel; see
+# http://www.xenomai.org/index.php/FAQs#Tips_and_tricks_setting_up_your_x86_kernel
+#
+# This tries to disable System Management Interrupts on Intel
+# chipsets. These interrupts run at higher priority than Xenomai core
+# code or even the I-pipe layer. So they can cause high latencies to
+# the real-time jobs (up to miliseconds). ATTENTION: On some systems,
+# SMI may be involved in thermal throttling of the CPU. Thus,
+# switching it off can cause hardware damage in overheat situations.
+#
+# Don't enable this by default
+# http://www.xenomai.org/pipermail/xenomai/2013-January/027292.html
+# Hopefully upstream will make this a run-time option; until then,
+# use smictrl
+# CONFIG_XENO_HW_SMI_WORKAROUND is not set
+#
+# Just like CONFIG_ACPI_PROCESSOR, this idle driver sends the CPU into
+# deep C states, also causing huge latencies because the APIC timer
+# that Xenomai uses may not fire anymore.
+#
+# CONFIG_INTEL_IDLE is not set
+#
+############################################
+# Other changes
+#
+# Disable FTRACE to improve latencies
+# http://www.xenomai.org/pipermail/xenomai/2013-January/027272.html
+# CONFIG_FTRACE is not set
+# and dependent option
+# CONFIG_KMEMCHECK is not set
+#
+# CONFIG_CPUMASK_OFFSTACK disables functions that pass cpumasks on
+# the stack.  Xenomai uses set_cpus_allowed(), which takes a cpumask
+# as an argument, in many places.  Disable this config and related
+# configs.
+#
+# CONFIG_CPUMASK_OFFSTACK is not set
+#
+# CONFIG_MAXSMP turns CONFIG_CPUMASK_OFFSTACK on automatically
+# CONFIG_MAXSMP is not set
+#
+# Upstream config sets CONFIG_NR_CPUS to 1024, which make config seems
+# not to like when CONFIG_MAXSMP is off
+CONFIG_NR_CPUS=256
+#
+# Jan's fix for x86 arch kernel oops:
+# kernel BUG at mm/mmap.c:2313!
+# invalid opcode: 0000 [#2] SMP 
+# http://www.xenomai.org/pipermail/xenomai-help/2011-06/msg00197.html
+# CONFIG_TRANSPARENT_HUGEPAGE is not set
+#
+# Gilles says this improves latencies
+# http://www.xenomai.org/pipermail/xenomai/2013-January/027272.html
+# CONFIG_FTRACE is not set
+# This apparently depends on !FTRACE
+# CONFIG_KMEMCHECK is not set
