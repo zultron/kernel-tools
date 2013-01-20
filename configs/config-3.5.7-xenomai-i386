@@ -265,7 +265,7 @@ CONFIG_IPIPE_LEGACY=y
 #
 # Upstream config sets CONFIG_NR_CPUS to 1024, which make config seems
 # not to like when CONFIG_MAXSMP is off
-CONFIG_NR_CPUS=256
+CONFIG_NR_CPUS=8
 #
 # Jan's fix for x86 arch kernel oops:
 # kernel BUG at mm/mmap.c:2313!
