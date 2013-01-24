@@ -16,9 +16,12 @@ ifeq ($(version),)
 $(error Must define $$(version))
 endif
 
+ARCH_I386 = i386 i686
+ARCH_TRANS = $(if $(findstring $(1),$(ARCH_I386)),i386,x86_64)
+
 $(CONFDIR)/config.%: \
-		configs/config-$(version)$(FLAVOR)-% \
-		configs/config-$(CODE)-$(version)-%
+		configs/config-$(version)$(FLAVOR)-$(call ARCH_TRANS,%) \
+		configs/config-$(CODE)-$(version)-$(call ARCH_TRANS,%)
 	# Merge config files; order is important
 	$(KCONFIGTOOL) -m $^ > $@
 
