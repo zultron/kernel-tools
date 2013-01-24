@@ -9,6 +9,7 @@
 CONFDIR := configs-deb
 FLAVOR := -xenomai
 CODE := precise
+ARCHES := i686 amd64
 
 KCONFIGTOOL := python kconfigtool.py
 # we must have $(version) defined
@@ -24,6 +25,8 @@ $(CONFDIR)/config.%: \
 		configs/config-$(CODE)-$(version)-$(call ARCH_TRANS,%)
 	# Merge config files; order is important
 	$(KCONFIGTOOL) -m $^ > $@
+
+all: $(patsubst %,$(CONFDIR)/config.%,$(ARCHES))
 
 clean:
 	rm -f $(CONFDIR)/*
