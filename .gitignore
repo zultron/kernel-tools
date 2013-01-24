@@ -1,0 +1,6 @@
+# Debian generated config files
+/configs-deb/
+
+
+# emacs cruft
+*~

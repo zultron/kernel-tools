@@ -1,0 +1,23 @@
+#                                                         -*-makefile-*-
+# Makefile.debian
+#
+# Generate kernel config files for use in RT kernels
+#
+# See:
+# https://github.com/zultron/kernel-rt-deb
+
+CONFDIR := configs-deb
+FLAVOR := -xenomai
+CODE := precise
+
+KCONFIGTOOL := python kconfigtool.py
+# we must have $(version) defined
+ifeq ($(version),)
+$(error Must define $$(version))
+endif
+
+$(CONFDIR)/config.%: \
+		configs/config-$(version)$(FLAVOR)-% \
+		configs/config-$(CODE)-$(version)-%
+	# Merge config files; order is important
+	$(KCONFIGTOOL) -m $^ > $@
