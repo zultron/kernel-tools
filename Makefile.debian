@@ -21,3 +21,6 @@ $(CONFDIR)/config.%: \
 		configs/config-$(CODE)-$(version)-%
 	# Merge config files; order is important
 	$(KCONFIGTOOL) -m $^ > $@
+
+clean:
+	rm -f $(CONFDIR)/*
