@@ -215,6 +215,10 @@ CONFIG_IPIPE_LEGACY=y
 #
 # CONFIG_CPU_FREQ is not set
 #
+# This can cause big latency spikes:
+#
+# CONFIG_INPUT_PCSPKR is not set
+#
 # The option CONFIG_PCI_MSI should be turned off. For more details,
 # see the thread at:
 # https://mail.gna.org/public/adeos-main/2008-08/threads.html
