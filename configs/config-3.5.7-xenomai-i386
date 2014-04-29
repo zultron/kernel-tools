@@ -286,3 +286,8 @@ CONFIG_NR_CPUS=8
 # gpio-pch is broken
 # http://www.xenomai.org/pipermail/xenomai/2013-January/027365.html
 # CONFIG_GPIO_PCH is not set
+#
+# Gilles: CONFIG_PREEMPT_NONE, results in shorter worst case latencies
+# http://permalink.gmane.org/gmane.linux.real-time.xenomai.users/18499
+# https://github.com/zultron/kernel-rt-deb/issues/2
+CONFIG_PREEMPT_NONE=y

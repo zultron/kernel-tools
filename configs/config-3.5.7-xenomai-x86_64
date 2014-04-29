@@ -4,8 +4,7 @@
 # hopefully, create a working configuration for a Xenomai-patched
 # kernel.
 #
-# It has been tested on EL6 distros with x86_64 CPU.  It is not yet
-# tested on Debian/Ubuntu.
+# It has been tested on EL6 distros with x86_64 CPU.
 #
 # General problem options; see
 # http://www.xenomai.org/documentation/xenomai-2.6/html/TROUBLESHOOTING/index.html#kconf
@@ -286,3 +285,8 @@ CONFIG_NR_CPUS=256
 # gpio-pch is broken
 # http://www.xenomai.org/pipermail/xenomai/2013-January/027365.html
 # CONFIG_GPIO_PCH is not set
+#
+# Gilles: CONFIG_PREEMPT_NONE, results in shorter worst case latencies
+# http://permalink.gmane.org/gmane.linux.real-time.xenomai.users/18499
+# https://github.com/zultron/kernel-rt-deb/issues/2
+CONFIG_PREEMPT_NONE=y
